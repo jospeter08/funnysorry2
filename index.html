@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Forgive Me, Sid ❤️‍🩹</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+/* ================= BASE ================= */
+body {
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(120deg, #ffeaa7, #fab1a0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ================= INTRO ================= */
+.intro {
+  position: fixed;
+  inset: 0;
+  background: #0f0f1a;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+.intro img {
+  max-width: 80%;
+  border-radius: 20px;
+  animation: float 3s ease-in-out infinite;
+}
+.intro button {
+  margin-top: 20px;
+  padding: 12px 30px;
+  border: none;
+  border-radius: 25px;
+  background: #ff6f91;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+/* ================= GAME CARD ================= */
+.game {
+  background: rgba(255,255,255,0.96);
+  width: 90%;
+  max-width: 380px;
+  padding: 26px;
+  border-radius: 28px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  text-align: center;
+  display: none;
+  position: relative;
+}
+.sticker {
+  font-size: 48px;
+  margin-bottom: 10px;
+  animation: bounce 1.5s infinite;
+}
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+h1 {
+  font-size: 22px;
+  color: #ff6f91;
+  margin: 6px 0;
+}
+.status {
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+/* PROGRESS */
+.progress-box {
+  width: 100%;
+  height: 12px;
+  background: #ffe3ec;
+  border-radius: 10px;
+  overflow: hidden;
+  margin: 12px 0 18px;
+}
+.progress-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #ff6f91, #ffb3c6);
+  transition: width 0.3s ease;
+}
+
+/* GAME AREA */
+.area {
+  height: 180px;
+  background: #fff3f6;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 15px;
+}
+
+/* FLOATING ITEMS */
+.item {
+  position: absolute;
+  font-size: 24px;
+  cursor: pointer;
+  animation: floatUp 5s linear forwards;
+}
+@keyframes floatUp {
+  0% { bottom: -20px; }
+  100% { bottom: 180px; opacity: 0; }
+}
+
+/* BUTTONS */
+.buttons {
+  position: relative;
+  height: 80px;
+  margin-top: 20px;
+}
+button {
+  padding: 10px 22px;
+  border: none;
+  border-radius: 25px;
+  font-size: 15px;
+  cursor: pointer;
+}
+.locked {
+  opacity: 0.4;
+  pointer-events: none;
+}
+#yes { background: #ff6f91; color: white; }
+#no { background: #fab1a0; position: absolute; left: 200px; }
+
+/* RESULT */
+.result {
+  margin-top: 15px;
+  font-size: 16px;
+  color: #ff4d6d;
+  display: none;
+}
+
+/* SIDE TEXT */
+.floating-text {
+  position: absolute;
+  font-size: 14px;
+  color: #ff6f91;
+  font-weight: bold;
+  pointer-events: none;
+  animation: floatSide 4s linear forwards;
+}
+@keyframes floatSide {
+  0% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-200px); }
+}
+
+/* ================= SLIDESHOW ================= */
+.slideshow {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.8);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 20;
+  color: white;
+  font-size: 18px;
+  text-align: center;
+  padding: 20px;
+  border-radius: 15px;
+  display: none;
+}
+.slide-content {
+  max-width: 90%;
+  max-height: 60%;
+  overflow-y: auto;
+  margin-bottom: 20px;
+}
+.slide-controls button {
+  margin: 0 10px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #ff6f91;
+  color: white;
+  font-size: 16px;
+}
+
+/* HIDDEN YOUTUBE AUDIO */
+#ytAudio { display: none; }
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div class="intro" id="intro">
+  <img src="intro.png" alt="intro">
+  <button onclick="startGame()">Continue</button>
+</div>
+
+<!-- AUDIO -->
+<audio id="pop" src="https://www.soundjay.com/buttons/sounds/button-30.mp3"></audio>
+<audio id="boing" src="https://www.soundjay.com/buttons/sounds/button-16.mp3"></audio>
+<audio id="win" src="https://www.soundjay.com/misc/sounds/bell-ringing-05.mp3"></audio>
+
+<!-- GAME -->
+<div class="game" id="game">
+  <div class="sticker">❤️‍🩹🎻</div>
+  <h1>shemichudea ?? kunje alle njan?? Sid!</h1>
+
+  <div class="status" id="status">Fixed hearts collected: 0 / 5 ❤️‍🩹</div>
+  <div class="progress-box">
+    <div class="progress-bar" id="progress"></div>
+  </div>
+  <div class="area" id="area"></div>
+  <div class="buttons" id="buttonArea">
+    <button id="yes" class="locked">Samadichu 💖</button>
+    <button id="no" class="locked">Ellaaa 😹</button>
+  </div>
+  <div class="result" id="result">
+    Okay…<br>ini oru try und 😏❤️‍🩹<br>I’ll do better 🎉
+  </div>
+</div>
+
+<!-- SLIDESHOW MODAL -->
+<div class="slideshow" id="slideshow">
+  <div class="slide-content" id="slideContent"></div>
+  <div class="slide-controls">
+    <button id="prevSlide">Previous</button>
+    <button id="nextSlide">Next</button>
+    <button id="closeSlide">Close</button>
+  </div>
+</div>
+
+<!-- YOUTUBE AUDIO (hidden) -->
+<iframe id="ytAudio" width="0" height="0"
+src="https://www.youtube.com/embed/B3Z4XGAxJB0?enablejsapi=1"
+frameborder="0" allow="autoplay"></iframe>
+
+<script>
+/* ===== INTRO ===== */
+function startGame(){
+  document.getElementById("intro").style.display="none";
+  document.getElementById("game").style.display="block";
+}
+
+/* ===== ELEMENTS ===== */
+const area = document.getElementById("area");
+const progressBar = document.getElementById("progress");
+const statusText = document.getElementById("status");
+const yesBtn = document.getElementById("yes");
+const noBtn = document.getElementById("no");
+const result = document.getElementById("result");
+
+const pop = document.getElementById("pop");
+const boing = document.getElementById("boing");
+const win = document.getElementById("win");
+
+let progress = 0;
+
+/* ===== FLOATING ITEMS ===== */
+setInterval(() => {
+  if(progress >= 100) return;
+
+  const item = document.createElement("div");
+  item.className = "item";
+  const isHeart = Math.random() < 0.7;
+  item.innerHTML = isHeart ? "❤️‍🩹" : ["😏","😹","💥","🦊","🐰"][Math.floor(Math.random()*5)];
+  item.style.left = Math.random()*85 + "%";
+
+  item.onclick = () => {
+    if(isHeart){
+      pop.play();
+      progress += 20;
+      progressBar.style.width = progress + "%";
+      statusText.innerText = `Fixed hearts collected: ${progress/20}/5 ❤️‍🩹`;
+      if(progress >= 100){
+        statusText.innerText = "All fixed hearts collected ❤️‍🩹";
+        yesBtn.classList.remove("locked");
+        noBtn.classList.remove("locked");
+      }
+    } else { boing.play(); }
+    item.remove();
+  };
+
+  area.appendChild(item);
+  setTimeout(()=>item.remove(),5000);
+}, 1000);
+
+/* ===== SIDE TEXT ===== */
+setInterval(() => {
+  const t = document.createElement("div");
+  t.className = "floating-text";
+  t.innerText = ["time kodukkuu ❤️‍🩹","cheriya effort aanu","seri aakum 😏","oru try mathi"][Math.floor(Math.random()*4)];
+  t.style.left = Math.random()*90 + "vw";
+  t.style.top = Math.random()*60 + 40 + "px";
+  document.body.appendChild(t);
+  setTimeout(()=>t.remove(),4000);
+},2000);
+
+/* ===== MOVING NO BUTTON ===== */
+noBtn.addEventListener("mouseover", () => {
+  if(noBtn.classList.contains("locked")) return;
+  const box = document.getElementById("buttonArea").getBoundingClientRect();
+  noBtn.style.left = Math.random()*(box.width-80) + "px";
+  boing.play();
+});
+
+/* ===== YES BUTTON ===== */
+yesBtn.onclick = () => {
+  win.play();
+  result.style.display = "block";
+  setTimeout(() => {
+    slideshow.style.display = "flex";
+    showSlide(0);
+
+    // Play YouTube audio
+    const ytFrame = document.getElementById("ytAudio");
+    ytFrame.contentWindow.postMessage('{"event":"command","func":"playVideo","args":""}', '*');
+  }, 1000);
+};
+
+/* ===== SLIDESHOW LOGIC ===== */
+const slides = [
+  "Slide 1: We’ve come so far… and you know me better than I know myself.\nRandom kid, childish only with close people. \nAnnoying & curious.\n Does dumb things to make you smile ❤️‍🩹",
+  "Slide 2: Also Who’s scared of losing people —especially you.",
+  "Slide 3: Sometimes i actually hate your friends (becaz they get more time with you (ur only mine hehe)).",
+  "Slide 4:  But Every friends series story needs a Jim and Pam!! 💖",
+  "Slide 5: Some Truths now  I even don’t even know what I am— introvert, extrovert, inverter 😅",
+  "Slide 6:  also Don’t hope full maturity from me, but I’ll try. 🤗",
+  "Slide 7: In front of you, I am just dipshit Derek 😭😄",
+  "Slide 8: Things which I hate too:(ready to get me blocked )",
+  "Slide 9: When you don’t tie your hair (you look like a delulu ghost 😭) 🌸",
+  "Slide 10: When you turn into dipshit Derek (maybe VECNA ) ",
+  "Slide 11: and also When you dump me for your friends😅(Cmon betta) ",
+  "Slide 12: But Life has ups and downs… ",
+  "Slide 13: I’m usually the downside, just an idiot(no credits needed) 😅",
+  "Slide 14: I love being with you in a thousand random ways but i want your love also  💖",
+  "Slide 15: This isn’t me saying sorry, this is me proposing sooo",
+  "Slide 16: Miss Sidhi BR,",
+  "Slide 17: I—Dipshit-just want to be with you forever (maybe till ur teeth starts to fall and die )",
+  "Slide 18: as vijay annan said  Problems come and go, konche chill pannam thambi (taking about ur family Bppppp all those .",
+  "Slide 19: Now I’m going to eat grapes for my tiny hope 🍇",
+  "Slide 20:  don't text back if it’s a no, because i want to end thiss saga",
+  "Slide 21: Or else wish me the happiest new year 🍇",
+  "Slide 21: ufff lots of hardworkkk i actually don't know to code this !!",
+  "Slide 22: Appo ellam parnje polea ommana kutty!! (i know its a noo)(last slide!!)❤️‍🩹 "
+];
+
+let currentSlide = 0;
+const slideshow = document.getElementById("slideshow");
+const slideContent = document.getElementById("slideContent");
+const prevSlide = document.getElementById("prevSlide");
+const nextSlide = document.getElementById("nextSlide");
+const closeSlide = document.getElementById("closeSlide");
+
+function showSlide(index){
+  if(index < 0) index = 0;
+  if(index >= slides.length) index = slides.length - 1;
+  currentSlide = index;
+  slideContent.innerText = slides[currentSlide];
+}
+
+prevSlide.onclick = () => showSlide(currentSlide - 1);
+nextSlide.onclick = () => showSlide(currentSlide + 1);
+closeSlide.onclick = () => {
+  slideshow.style.display = "none";
+  // Stop YouTube audio
+  const ytFrame = document.getElementById("ytAudio");
+  ytFrame.contentWindow.postMessage('{"event":"command","func":"stopVideo","args":""}', '*');
+};
+</script>
+
+</body>
+</html>
